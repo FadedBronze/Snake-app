@@ -1,6 +1,5 @@
 import Head from 'next/head'
 
-import { useEffect, useRef, useState } from 'react'
 import useWindowSize from './hooks/useWindowSize'
 
 import styles from '../styles/Home.module.css'
@@ -8,20 +7,11 @@ import styles from '../styles/Home.module.css'
 import BottomOptions from './components/BottomOptions'
 import SideOptions from './components/SideOptions'
 import TopOptions from './components/topOptions'
+import Game from './components/Game/Game'
 
 export default function Home() {
   const wn = useWindowSize()
-  const c = useRef(null)
-
-  useEffect(() => {
-    const ctx = c.current.getContext('2d')
-    const smaller = Math.min(wn.width, wn.height)
-
-    console.log(wn)
-
-    ctx.fillStyle = "green"
-    ctx.fillRect(0, 0, wn.height - 250, wn.height - 250)
-  }, [wn])
+  const canvasSize = wn.height - 250
 
   return (
     <div className={styles.container}>
@@ -32,12 +22,7 @@ export default function Home() {
       </Head>
 
       <main>
-        <canvas 
-          ref={c}
-          className={styles.gameCanvas} 
-          width={wn.height - 250}
-          height={wn.height - 250}
-        />
+        <Game wn={wn} canvasSize={canvasSize} />
         {
         //topOptions
         // - restart
@@ -49,7 +34,7 @@ export default function Home() {
         //sideOptions
         // - bigger changes
         }
-        <SideOptions size={`${wn.width - (wn.height - 250)}px`} />
+        <SideOptions size={`${wn.width - canvasSize}px`} />
         {
         //footerOptions
         // - smaller changes
