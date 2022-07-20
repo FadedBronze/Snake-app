@@ -1,0 +1,7 @@
+.SideOptionsMenu {
+    position: fixed;
+    top: 50px;
+    right: 0px;
+    height: calc(100% - 250px);
+    background-color: purple;
+}
