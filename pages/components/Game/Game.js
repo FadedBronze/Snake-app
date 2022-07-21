@@ -5,17 +5,24 @@ import styles from '../../../styles/Game.module.css'
 
 const tileData = []
 const snakeTileIndexs = []
+const appleTileIndexs = []
+let running = true
+
 let snakeDir = {x: 0, y: 1}
 
 const Game = ({ wn, canvasSize }) => {
     const c = useRef(null)
 
-    const gridSize = 25
-    const tileSize = Math.ceil(canvasSize / gridSize)
+    const gridSize = 16
+    const gameSpeed = 150
     const canvasColor = "rgb(10, 10, 10)"
     const snakeColor = "green"
-    const snakeLength = 10
+    const appleColor = "red"
+    const snakeLength = 4
     const snakeStartPos = {x: 0, y: 0}
+    const applesCount = 3
+
+    const tileSize = Math.ceil(canvasSize / gridSize)
 
     const updateTiles = () => {
         const ctx = c.current.getContext('2d')
@@ -43,6 +50,43 @@ const Game = ({ wn, canvasSize }) => {
         return replaced
     }
 
+    const addTileByIndex = (tileIndex, tile) => {
+        
+        tileData.splice(
+            tileIndex, 
+            1,
+            tile
+        )
+    }
+
+    const getTileIndex = (x, y) => {
+        return tileData.findIndex(
+            tile => 
+            tile.x == x &&
+            tile.y == y
+        )
+    }
+
+    const spawnApple = () => {
+        const possibleSpawns = tileData.filter(
+            (tile, index) => 
+            !(snakeTileIndexs.some( 
+                snakeTileIndex => index == snakeTileIndex
+            ) &&
+            appleTileIndexs.some(
+                appleTileIndex => index == appleTileIndex
+            )) 
+        )
+
+        const replaced = possibleSpawns[
+            Math.floor(
+                Math.random() * tileData.length
+            ) - 1
+        ]
+
+        return addTile({x: replaced.x, y: replaced.y, color: appleColor, type: "apple"})
+    }
+
     useEffect(() => {
         if (tileData.length > 0) return
 
@@ -66,23 +110,75 @@ const Game = ({ wn, canvasSize }) => {
 
         updateTiles()
 
-        //
-        
+        //initalApples
+
+        for (let i = 0; i < applesCount; i++) {
+            appleTileIndexs.push(
+                spawnApple()
+            )
+        }
+
     }, [])
 
     useInterval(() => {
-        const removedTail = tileData[snakeTileIndexs.shift()]
+        if (!running) return
 
-        addTile({x: removedTail.x, y: removedTail.y, type: "empty", color: canvasColor})
+        //add head
 
         const head = tileData[snakeTileIndexs[snakeTileIndexs.length - 1]]
 
-        snakeTileIndexs.push(
-            addTile({x: head.x + snakeDir.x, y: head.y + snakeDir.y, type: "snake", color: snakeColor})
-        )
+        //
 
+        const newHeadPos = {x: head.x + snakeDir.x, y: head.y + snakeDir.y}
+
+        if (newHeadPos.x >= gridSize || newHeadPos.y >= gridSize || newHeadPos.x < 0 || newHeadPos.y < 0) {
+            running = false
+            updateTiles()
+            return
+        }
+
+        //
+
+        const newHeadIndex = getTileIndex(newHeadPos.x, newHeadPos.y)
+        const newHead = tileData[newHeadIndex]
+
+        if (snakeTileIndexs.some(snakeTileIndex => snakeTileIndex == newHeadIndex)) {
+            running = false
+            updateTiles()
+            return
+        }
+
+        if (!appleTileIndexs.some(
+            (appleTileIndex, index) => {
+                if (appleTileIndex == newHeadIndex) {
+                    appleTileIndexs.splice(index, 1)
+                }
+
+                if (appleTileIndexs.length < applesCount) {
+                    appleTileIndexs.push(
+                        spawnApple()
+                    )
+                }
+
+                return appleTileIndex == newHeadIndex
+            }
+        )) {
+            //remove tail
+
+            const removedTailIndex = snakeTileIndexs.shift()
+            const removedTail = tileData[removedTailIndex]
+        
+            addTileByIndex(removedTailIndex, {x: removedTail.x, y: removedTail.y, type: "empty", color: canvasColor})
+        } 
+
+        addTileByIndex(newHeadIndex, {x: newHead.x, y: newHead.y, type: "snake", color: snakeColor})
+
+        snakeTileIndexs.push(
+            newHeadIndex
+        )
+        
         updateTiles()
-    }, 100)
+    }, gameSpeed)
 
     useEffect(() => {
         updateTiles()
