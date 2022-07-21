@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 
+import useInterval from '../../hooks/useInterval'
 import styles from '../../../styles/Game.module.css'
 
 const tileData = []
 const snakeTileIndexs = []
+let snakeDir = {x: 0, y: 1}
 
 const Game = ({ wn, canvasSize }) => {
     const c = useRef(null)
 
-    const gridSize = 15
+    const gridSize = 25
     const tileSize = Math.ceil(canvasSize / gridSize)
     const canvasColor = "rgb(10, 10, 10)"
     const snakeColor = "green"
@@ -16,8 +18,9 @@ const Game = ({ wn, canvasSize }) => {
     const snakeStartPos = {x: 0, y: 0}
 
     const updateTiles = () => {
+        const ctx = c.current.getContext('2d')
+
         tileData.map(tile => {
-            const ctx = c.current.getContext('2d')
             ctx.fillStyle = tile.color
             ctx.fillRect(tile.x * tileSize, tile.y * tileSize, tileSize, tileSize)
         })
@@ -30,8 +33,6 @@ const Game = ({ wn, canvasSize }) => {
             oldtile.x == tile.x &&
             oldtile.y == tile.y
         )
-
-        console.log(replaced, tile)
 
         tileData.splice(
             replaced, 
@@ -63,21 +64,28 @@ const Game = ({ wn, canvasSize }) => {
             )
         }
 
-        console.log(tileData)
-
         updateTiles()
 
         //
-
-        setInterval(() => {
-            console.log('ran')
-        }, 70)
+        
     }, [])
+
+    useInterval(() => {
+        const removedTail = tileData[snakeTileIndexs.shift()]
+
+        addTile({x: removedTail.x, y: removedTail.y, type: "empty", color: canvasColor})
+
+        const head = tileData[snakeTileIndexs[snakeTileIndexs.length - 1]]
+
+        snakeTileIndexs.push(
+            addTile({x: head.x + snakeDir.x, y: head.y + snakeDir.y, type: "snake", color: snakeColor})
+        )
+
+        updateTiles()
+    }, 100)
 
     useEffect(() => {
         updateTiles()
-
-        console.log(tileData)
     }, [wn])
 
     return ( 
@@ -86,6 +94,27 @@ const Game = ({ wn, canvasSize }) => {
           className={styles.gameCanvas} 
           width={canvasSize}
           height={canvasSize}
+          tabIndex="0"
+          onKeyDown={(e) => {
+
+            if (e.key == "ArrowUp") {
+                snakeDir = {x: 0, y: -1}
+            }
+            
+            if (e.key == "ArrowDown") {
+                snakeDir = {x: 0, y: 1}
+            }
+            
+            if (e.key == "ArrowLeft") {
+                snakeDir = {x: -1, y: 0}
+            }
+
+            if (e.key == "ArrowRight") {
+                snakeDir = {x: 1, y: 0}
+            }
+
+            console.log(snakeDir)
+          }}
         />
     );
 }
