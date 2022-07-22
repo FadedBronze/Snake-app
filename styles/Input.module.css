@@ -1,0 +1,20 @@
+.Input {
+    width: 300px;
+    height: fit-content;
+
+    padding: 10px;
+    
+    font-size: 15px;
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    
+    border-radius: 10px;
+}
+
+.Input > input {
+    all: unset;
+    width: 30%;
+    background-color: rgba(255, 255, 255, 0.4)
+}

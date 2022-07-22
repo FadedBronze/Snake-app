@@ -13,16 +13,16 @@ let snakeDir = {x: 0, y: 1}
 const Game = ({ wn, canvasSize }) => {
     const c = useRef(null)
 
-    const gridSize = 16
-    const gameSpeed = 150
+    const gridSize = 12
+    const gameSpeed = 120
     const canvasColor = "rgb(10, 10, 10)"
     const snakeColor = "green"
     const appleColor = "red"
     const snakeLength = 4
-    const snakeStartPos = {x: 0, y: 0}
     const applesCount = 1
 
-    const tileSize = Math.ceil(canvasSize / gridSize)
+    const snakeStartPos = {x: 0, y: 0}
+    const tileSize = canvasSize / gridSize
 
     const updateTiles = () => {
         const ctx = c.current.getContext('2d')

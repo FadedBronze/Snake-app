@@ -1,7 +1,18 @@
 .SideOptionsMenu {
+    padding: 10px;
+
     position: fixed;
     top: 50px;
     right: 0px;
-    height: 100%;
-    background-color: purple;
+
+    height: calc(100vh - 50px); 
+
+    background-color: rgb(80, 80, 80);
+
+    overflow-y: auto;
+
+    display: flex;
+    align-content: flex-start;
+    gap: 15px;
+    flex-wrap: wrap;
 }
