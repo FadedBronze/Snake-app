@@ -4,14 +4,13 @@ import useWindowSize from './hooks/useWindowSize'
 
 import styles from '../styles/Home.module.css'
 
-import BottomOptions from './components/BottomOptions'
 import SideOptions from './components/SideOptions'
 import TopOptions from './components/topOptions'
 import Game from './components/Game/Game'
 
 export default function Home() {
   const wn = useWindowSize()
-  const canvasSize = wn.height - 250
+  const canvasSize = wn.height - 50
 
   return (
     <div className={styles.container}>
@@ -41,7 +40,6 @@ export default function Home() {
         // - more apples
         // - change game colors
         }
-        <BottomOptions />
       </main>
     </div>
   )

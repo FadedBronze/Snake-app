@@ -20,7 +20,7 @@ const Game = ({ wn, canvasSize }) => {
     const appleColor = "red"
     const snakeLength = 4
     const snakeStartPos = {x: 0, y: 0}
-    const applesCount = 3
+    const applesCount = 1
 
     const tileSize = Math.ceil(canvasSize / gridSize)
 
@@ -68,23 +68,28 @@ const Game = ({ wn, canvasSize }) => {
     }
 
     const spawnApple = () => {
-        const possibleSpawns = tileData.filter(
-            (tile, index) => 
+        const possibleSpawns = tileData.filter((tile, index) => 
             !(snakeTileIndexs.some( 
                 snakeTileIndex => index == snakeTileIndex
-            ) &&
-            appleTileIndexs.some(
+            ) && 
+            !(appleTileIndexs.some( 
                 appleTileIndex => index == appleTileIndex
-            )) 
+            ))
+        ))
+
+        const replacedIndex = Math.floor(
+            Math.random() * possibleSpawns.length
         )
 
         const replaced = possibleSpawns[
-            Math.floor(
-                Math.random() * tileData.length
-            ) - 1
+            replacedIndex
         ]
-
-        return addTile({x: replaced.x, y: replaced.y, color: appleColor, type: "apple"})
+        
+        console.log(replaced, "replaced", replacedIndex, "index", appleTileIndexs, "apples")
+        
+        appleTileIndexs.push(
+            addTile({x: replaced.x, y: replaced.y, color: appleColor, type: "apple"})       
+        )
     }
 
     useEffect(() => {
@@ -92,7 +97,6 @@ const Game = ({ wn, canvasSize }) => {
 
         //setting up game tiles
     
-        console.log(wn)
     
         for (let i = 0; i < gridSize; i++) {
             for (let j = 0; j < gridSize; j++) {
@@ -113,9 +117,7 @@ const Game = ({ wn, canvasSize }) => {
         //initalApples
 
         for (let i = 0; i < applesCount; i++) {
-            appleTileIndexs.push(
-                spawnApple()
-            )
+            spawnApple()
         }
 
     }, [])
@@ -133,7 +135,6 @@ const Game = ({ wn, canvasSize }) => {
 
         if (newHeadPos.x >= gridSize || newHeadPos.y >= gridSize || newHeadPos.x < 0 || newHeadPos.y < 0) {
             running = false
-            updateTiles()
             return
         }
 
@@ -144,7 +145,6 @@ const Game = ({ wn, canvasSize }) => {
 
         if (snakeTileIndexs.some(snakeTileIndex => snakeTileIndex == newHeadIndex)) {
             running = false
-            updateTiles()
             return
         }
 
@@ -152,15 +152,10 @@ const Game = ({ wn, canvasSize }) => {
             (appleTileIndex, index) => {
                 if (appleTileIndex == newHeadIndex) {
                     appleTileIndexs.splice(index, 1)
+                    return true
+                } else {
+                    return false
                 }
-
-                if (appleTileIndexs.length < applesCount) {
-                    appleTileIndexs.push(
-                        spawnApple()
-                    )
-                }
-
-                return appleTileIndex == newHeadIndex
             }
         )) {
             //remove tail
@@ -169,7 +164,9 @@ const Game = ({ wn, canvasSize }) => {
             const removedTail = tileData[removedTailIndex]
         
             addTileByIndex(removedTailIndex, {x: removedTail.x, y: removedTail.y, type: "empty", color: canvasColor})
-        } 
+        } else {
+            spawnApple()
+        }
 
         addTileByIndex(newHeadIndex, {x: newHead.x, y: newHead.y, type: "snake", color: snakeColor})
 
@@ -209,7 +206,6 @@ const Game = ({ wn, canvasSize }) => {
                 snakeDir = {x: 1, y: 0}
             }
 
-            console.log(snakeDir)
           }}
         />
     );
