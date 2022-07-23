@@ -6,6 +6,7 @@ import styles from '../styles/Home.module.css'
 
 import SideOptions from './components/SideOptions'
 import Game from './components/Game/Game'
+import TopOptions from './components/AboveOptions'
 
 export default function Home() {
   const wn = useWindowSize()
@@ -25,8 +26,10 @@ export default function Home() {
         // - restart
         // - new game
         // - fullscreen
+        // - pause
         }
         <SideOptions size={`${wn.width - (wn.height - 30)}px`} />
+        <TopOptions />
       </main>
     </div>
   )
