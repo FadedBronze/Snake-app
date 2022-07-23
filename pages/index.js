@@ -7,9 +7,12 @@ import styles from '../styles/Home.module.css'
 import SideOptions from './components/SideOptions'
 import Game from './components/Game/Game'
 import TopOptions from './components/AboveOptions'
+import { useState } from 'react'
 
 export default function Home() {
   const wn = useWindowSize()
+  const [paused, setPaused] = useState(false)
+  const [restart, setRestart] = useState(false)
 
   return (
     <div className={styles.container}>
@@ -20,16 +23,21 @@ export default function Home() {
       </Head>
 
       <main>
-        <Game wn={wn} canvasSize={wn.height - 50} />
-        {
-        //topOptions
-        // - restart
-        // - new game
-        // - fullscreen
-        // - pause
-        }
+        <Game 
+          wn={wn} 
+          canvasSize={wn.height - 50} 
+          paused={paused} 
+          setPaused={setPaused} 
+          restart={restart} 
+          setRestart={setRestart} 
+        />
         <SideOptions size={`${wn.width - (wn.height - 30)}px`} />
-        <TopOptions />
+        <TopOptions 
+          paused={paused}
+          setPaused={setPaused} 
+          restart={restart} 
+          setRestart={setRestart}
+        />
       </main>
     </div>
   )
