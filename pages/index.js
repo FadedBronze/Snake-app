@@ -14,6 +14,11 @@ export default function Home() {
   const [paused, setPaused] = useState(false)
   const [restart, setRestart] = useState(false)
 
+  const [speed, setSpeed] = useState(120)
+  const [gridSize, setGridSize] = useState(12)
+  const [applesCount, setApplesCount] = useState(1)
+  const [snakeLength, setSnakeLength] = useState(4)
+
   return (
     <div className={styles.container}>
       <Head>
@@ -30,8 +35,20 @@ export default function Home() {
           setPaused={setPaused} 
           restart={restart} 
           setRestart={setRestart} 
+
+          speed={speed}
+          gridSize={gridSize}
+          snakeLength={snakeLength}
+          applesCount={applesCount}
         />
-        <SideOptions size={`${wn.width - (wn.height - 30)}px`} />
+        <SideOptions 
+          size={`${wn.width - (wn.height - 30)}px`}
+
+          setSpeed={setSpeed}
+          setGridSize={setGridSize}
+          setSnakeLength={setSnakeLength}
+          setApplesCount={setApplesCount}
+        />
         <TopOptions 
           paused={paused}
           setPaused={setPaused} 

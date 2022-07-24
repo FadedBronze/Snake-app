@@ -5,4 +5,7 @@
     border-radius: 5px;
     border: 0;
     margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

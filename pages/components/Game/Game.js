@@ -10,16 +10,12 @@ let running = true
 
 let snakeDir = {x: 0, y: 1}
 
-const Game = ({ wn, canvasSize, paused, setPaused, restart, setRestart }) => {
+const Game = ({ wn, canvasSize, paused, setPaused, restart, setRestart, speed, gridSize, snakeLength, applesCount}) => {
     const c = useRef(null)
 
-    const gridSize = 16
-    const gameSpeed = 125
     const canvasColor = "rgb(0, 150, 0)"
-    const snakeColor = "rgb(0, 200, 0)"
     const appleColor = "rgb(200, 50, 75)"
-    const snakeLength = 4
-    const applesCount = 7
+    const snakeColor = "rgb(0, 200, 0)"
 
     const snakeStartPos = {x: 0, y: 0}
     const tileSize = canvasSize / gridSize
@@ -200,7 +196,7 @@ const Game = ({ wn, canvasSize, paused, setPaused, restart, setRestart }) => {
         )
         
         updateTiles()
-    }, gameSpeed)
+    }, speed)
 
     useEffect(() => {
         updateTiles()
