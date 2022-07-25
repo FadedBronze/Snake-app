@@ -1,7 +1,7 @@
-import styles from '../../styles/TopOptions.module.css'
+import styles from '../styles/TopOptions.module.css'
 import TopOption from './AboveOption';
-import pauseImage from '../../public/pause.png'
-import reloadImage from '../../public/reload.png'
+import pauseImage from '../public/pause.png'
+import reloadImage from '../public/reload.png'
 
 function TopOptions({ paused, setPaused, restart, setRestart }) {
     return ( 

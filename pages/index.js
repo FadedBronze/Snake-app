@@ -1,12 +1,12 @@
 import Head from 'next/head'
 
-import useWindowSize from './hooks/useWindowSize'
+import useWindowSize from '../hooks/useWindowSize'
 
 import styles from '../styles/Home.module.css'
 
-import SideOptions from './components/SideOptions'
-import Game from './components/Game/Game'
-import TopOptions from './components/AboveOptions'
+import SideOptions from '../components/SideOptions'
+import Game from '../components/Game/Game'
+import TopOptions from '../components/AboveOptions'
 import { useState } from 'react'
 
 export default function Home() {

@@ -1,5 +1,5 @@
-import styles from '../../styles/TopOption.module.css'
-import Image from 'next/dist/client/image';
+import styles from '../styles/TopOption.module.css'
+import Image from 'next/image';
 
 const TopOption = ({img, onOff}) => {
     return (  

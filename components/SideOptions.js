@@ -1,4 +1,4 @@
-import styles from '../../styles/SideOptions.module.css';
+import styles from '../styles/SideOptions.module.css';
 import Input from './Input';
 
 const SideOptions = ({size, setSpeed, setGridSize, setSnakeLength, setApplesCount}) => {

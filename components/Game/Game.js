@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
 import useInterval from '../../hooks/useInterval'
-import styles from '../../../styles/Game.module.css'
+import styles from '../../styles/Game.module.css'
 
 let tileData = []
 let snakeTileIndexs = []
